@@ -35,4 +35,27 @@ public class RatingServiceImpl implements RatingService {
     public List<Rating> getRatingByHotelId(String hotelId) {
         return ratingRepo.findByHotelId(hotelId);
     }
+
+    @Override
+    public Rating updateRating(String ratingId, Rating rating) throws Exception{
+
+        Rating existingRating = ratingRepo.findById(ratingId)
+                .orElseThrow(() -> new Exception("Rating with given ID not found on server !! : " + ratingId));
+
+        // Explicitly re-confirm the primary key ID on the entity
+        existingRating.setId(ratingId);
+
+        existingRating.setRating(rating.getRating());
+        existingRating.setFeedback(rating.getFeedback());
+
+        // Avoid setting empty strings to foreign keys if they are optional
+        if (rating.getUserId() != null && !rating.getUserId().isEmpty()) {
+            existingRating.setUserId(rating.getUserId());
+        }
+        if (rating.getHotelId() != null && !rating.getHotelId().isEmpty()) {
+            existingRating.setHotelId(rating.getHotelId());
+        }
+
+        return ratingRepo.save(existingRating);
+    }
 }

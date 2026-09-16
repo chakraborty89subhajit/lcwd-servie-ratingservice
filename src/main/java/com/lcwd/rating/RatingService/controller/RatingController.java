@@ -5,10 +5,7 @@ import com.lcwd.rating.RatingService.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,5 +40,14 @@ public class RatingController {
     public ResponseEntity<List<Rating>> getRatingBYHotelId(@PathVariable String hotelid){
         return new  ResponseEntity<List<Rating>>
                 (ratingService.getRatingByHotelId(hotelid),HttpStatus.OK);
+    }
+
+    //put mapping
+    @PutMapping("/{ratingId}")
+    public ResponseEntity<Rating> updateRating(@PathVariable String ratingId,
+                                               @RequestBody Rating rating) throws Exception {
+        Rating updateRating = ratingService.updateRating(ratingId,rating);
+        return ResponseEntity.ok(updateRating);
+
     }
 }

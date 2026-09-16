@@ -13,4 +13,6 @@ public interface RatingService {
     public List<Rating> getRatingByUserId(String userId);
     //get All by hotel Id
     public List<Rating> getRatingByHotelId(String hotelId);
+
+    Rating updateRating(String ratingId, Rating rating) throws Exception;
 }
